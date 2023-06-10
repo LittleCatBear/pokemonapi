@@ -1,12 +1,15 @@
 
 # frozen_string_literal: true
-require "byebug"
+
 class PokemonsController < ApplicationController
   before_action :set_pokemon, only: [:show, :update, :destroy]
 
   # GET /pokemons
   def index
-    @pokemons = Pokemon.all
+    page = params[:page] || 1
+    per_page = params[:per_page] || 10
+
+    @pokemons = Pokemon.paginate(page: page, per_page: per_page)
 
     render json: @pokemons
   end

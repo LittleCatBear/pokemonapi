@@ -7,24 +7,27 @@ class PokemonsControllerTest < ActionDispatch::IntegrationTest
     @type1 = Type.create!(name: "plant")
     @type2 = Type.create!(name: "fire")
     @generation = Generation.create!(number: 1)
-    @pokemon = Pokemon.create!(
-      number: 1,
-      name: "Bulbizarre",
-      hp: 1,
-      attack: 2,
-      defense: 3,
-      sp_atk: 4,
-      sp_def: 5,
-      speed: 6,
-      type1: @type1,
-      type2: @type2,
-      generation: @generation
-    )
+    generate_pokemons(names: ["Bulbizarre"])
+    @pokemon = Pokemon.find_by(name: "Bulbizarre")
   end
 
   test "#index should be successful" do
     get pokemons_url, as: :json
     assert_response :success
+  end
+
+  test "#index should get index with pagination" do
+    generate_pokemons(names: ["Salameche", "Carapuce", "Curcuma", "Evoli", "Rondoudou", "Melofee"])
+    get pokemons_url(page: 1, per_page: 5), as: :json
+    assert_response :success
+
+    assert_equal 5, JSON.parse(response.body).size
+
+    get pokemons_url(page: 2, per_page: 5), as: :json
+    assert_response :success
+
+    # 7 pokemons total - 5
+    assert_equal 2, JSON.parse(response.body).size
   end
 
   test "#create should create a pokemon" do
@@ -102,5 +105,25 @@ class PokemonsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response 204
+  end
+
+  private
+
+  def generate_pokemons(names: [])
+    names.each do |name|
+      Pokemon.create!(
+        number: 1,
+        name: name,
+        hp: 1,
+        attack: 2,
+        defense: 3,
+        sp_atk: 4,
+        sp_def: 5,
+        speed: 6,
+        type1: @type1,
+        type2: @type2,
+        generation: @generation
+      )
+    end
   end
 end
