@@ -3,4 +3,5 @@ Rails.application.routes.draw do
 
   resources :pokemons
   resources :generations
+  resources :types
 end
