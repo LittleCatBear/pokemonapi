@@ -6,6 +6,8 @@ class Pokemon < ApplicationRecord
   belongs_to :type2, class_name: 'Type', optional: true
   belongs_to :generation
 
+  accepts_nested_attributes_for :type1, :type2, :generation
+
   before_save :calculate_total
 
   validates :number,
