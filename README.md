@@ -20,51 +20,56 @@ Chaque génération a un numéro unique et comporte de nombreux Pokémon.
 
 ## Installation
 
-1. **Téléchargez le repo**
+1. **Télécharger le repo**
    ```
    git clone git@github.com:LittleCatBear/pokemonapi.git
    ```
-2. **Lancer PostgreSQL**
-3. **Créer et remplir la base de données**
+2. **Installer les dépendences**
+```
+bundle install
+```
+3. **Lancer PostgreSQL**
+4. **Créer et remplir la base de données**
    ```
    rails db:create
    rails db:seed
    ```
-4. **Démarrer le serveur**
+5. **Démarrer le serveur**
    ```
    rails s
    ```
 
-## Requêtes disponibles\*\*
+## Requêtes disponibles
 
 Voici quelques exemples de requêtes pour `PokemonsController` (à l'aide de Postman ou autre outils):
 
 - **GET** `/pokemons` pour récupérer la liste des pokémons. Ce endpoint est paginé, par défaut il retourne la liste des 10 premiers pokemons. Il est possible de changer de page en ajoutant le param `page` (par exemple `?page=2`), ou de changer le nombre de pokemons retournés en ajoutant le param `per_page` (par exemple `?per_page=25`)
 - **POST** `/pokemons` pour créer un nouveau pokémon. Si les type1, type2 et generation ids existent et sont connus, il est possible de les passer tels quels dans la requête. S'il s'agit d'un nouveau type ou d'une nouvelle génération, le endpoint accepte les nested parameters.
-  exemple:
-  URL: http://localhost:3000/pokemons
-  Request Type: POST
-  Headers: Content-Type: application/json
-  Body:
 
-  ```json
-  {
-    "pokemon": {
-      "number": 1,
-      "name": "Fluffy",
-      "hp": 45,
-      "attack": 49,
-      "defense": 49,
-      "sp_atk": 65,
-      "sp_def": 65,
-      "speed": 45,
-      "legendary": false,
-      "type1": { "name": "Bois" },
-      "type2": { "name": "Ciel" },
-      "generation": { "number": 18 }
-    }
-  }
-  ```
+exemple:
+URL: http://localhost:3000/pokemons
+Request Type: POST
+Headers: Content-Type: application/json
+Body:
+
+```json
+{
+ "pokemon": {
+   "number": 1,
+   "name": "Fluffy",
+   "hp": 45,
+   "attack": 49,
+   "defense": 49,
+   "sp_atk": 65,
+   "sp_def": 65,
+   "speed": 45,
+   "legendary": false,
+   "type1": { "name": "Bois" },
+   "type2": { "name": "Ciel" },
+   "generation": { "number": 18 }
+ }
+}
+```
 
 - **GET** `/pokemons/:id` pour obtenir les détails d'un pokémon spécifique
 - **PUT/PATCH** `/pokemons/:id` pour mettre à jour un pokémon spécifique
@@ -76,7 +81,7 @@ Voici quelques exemples de requêtes pour `PokemonsController` (à l'aide de Pos
 - L'API ne prend pas en charge le téléchargement de fichiers ou d'images
 - Il n'y a pas de système de versionnement de l'API
 - Il n'y a pas de rate limit
-- la pagination `per_page` n'est pas limitée
+- le paramètre `per_page` n'est pas limité
 - Les pokemons retournés dans les réponses n'affichent pas le nom des types ou le numéro de génération, seulement leurs ids
 
 ## Prochaines étapes
